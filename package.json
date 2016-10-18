@@ -1,0 +1,22 @@
+{
+  "name": "expenser",
+  "version": "1.0.0",
+  "description": "Calculates daily expenses and shows monthly expense statistics.",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/hsleonis",
+  "keywords": [
+    "Electron",
+    "expense",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "MD. Hasan Shahriar",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.4.1"
+  }
+}
