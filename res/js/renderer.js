@@ -6,20 +6,37 @@
     var modules = [
         'lokijs'
     ];
+    var db = null;
+    var expense = null;
 
     var app = angular.module('expenser', modules).run(function ($templateCache, $http) {
         $http.get('index.html', {
             cache: $templateCache
         });
     });
+
+    // Main Controller
+    app.controller('mainController', ['$scope', 'Loki', function ($scope, Loki) {
+        db = new Loki('./app.db',{
+            autosave: true,
+            autosaveInterval: 500,
+            autoload: true
+        });
+        db.loadDatabase();
+        console.log(db.listCollections());
+
+        expense = db.getCollection('expense');
+        if(expense === null) {
+            expense = db.addCollection('expense', {
+                indices: ['date', 'purpose', 'amount']
+            });
+            console.log(expense);
+        }
+
+    }]);
     
     // Input Controller
     app.controller('inputController', ['$scope', 'Loki', function ($scope, Loki) {
-        var db = new Loki('./app.db');
-        var expense = db.addCollection('expense', {
-            indices: ['date','purpose','amount']
-        });
-
         $scope.addExpense = function () {
             var data = {
                 'date': $scope.input_date,
@@ -27,8 +44,13 @@
                 'amount': $scope.input_amount
             };
             expense.insert(data);
-            console.log(expense);
+            console.log(expense); // output
         };
+    }]);
+
+    // Output Controller
+    app.controller('outputController', ['$scope', 'Loki', function ($scope, Loki) {
+        $scope.expenses = expense.data;
     }])
 
 })(window.angular);
