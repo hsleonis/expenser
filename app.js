@@ -4,8 +4,6 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-const path = require('path')
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
@@ -15,7 +13,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({width: 800, height: 600})
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://${__dirname}/windows/main/index.html')
+  mainWindow.loadURL('file://'+__dirname+'/windows/main/index.html')
 
   // Open the DevTools.
   /* 
@@ -55,4 +53,60 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-require('./res/js/menu.js')
+const {Menu} = require('electron')
+const path = require('path')
+
+const template = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'Daily Expense',
+        click (item, focusedWindow) {
+          const modalPath = path.join('file://'+__dirname+'/windows/main/index.html')
+          mainWindow.loadURL(modalPath)
+        }
+      },
+      {
+        label: 'Monthly Expense',
+        click (item, focusedWindow) {
+          const modalPath = path.join('file://'+__dirname+'/windows/month/month.html')
+          mainWindow.loadURL(modalPath)
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Toggle Developer Tools',
+        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+        click (item, focusedWindow) {
+          if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+        }
+      },
+      {
+        role: 'togglefullscreen'
+      },
+      {
+        label: 'Exit',
+        role: 'close'
+      }
+    ]
+  },
+  {
+    role: 'help',
+    submenu: [
+      {
+        label: 'About',
+        click () { require('electron').shell.openExternal('http://themeaxe.com') }
+      },
+      {
+        label: 'Support',
+        click () { require('electron').shell.openExternal('http://themeaxe.com') }
+      }
+    ]
+  }
+]
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)

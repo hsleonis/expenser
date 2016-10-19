@@ -1,3 +1,24 @@
 body{
-    background: #2E7B57;
+    /*background-color: #1F253D;*/
+    height: 100%;
+    font-family: 'Abel', sans-serif;
+}
+.input_col{
+    /*background-color: #394165;*/
+    /*color: #FFF;*/
+    padding: 20px;
+    height: 100%;
+}
+input[type="number"],
+input[type="text"],
+input[type="date"],
+.btn{
+    border-radius: 0;
+}
+input[type="number"]:focus, input[type="number"]:active,
+input[type="text"]:focus, input[type="text"]:active,
+input[type="date"]:focus, input[type="date"]:active
+{
+    outline: 2px solid #10A8AB;
+    box-shadow: none;
 }
