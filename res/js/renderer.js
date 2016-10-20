@@ -14,31 +14,27 @@
             cache: $templateCache
         });
     });
+    
+    // Parse date
+    app.filter('UTFDate',function(){
+        return function(input) {
+            return input.substring(0, 10).split('-').reverse().join('/');
+        };
+    });
 
     // Main Controller
     app.controller('mainController', ['$scope', 'Loki', function ($scope, Loki) {
-        db = new Loki('./app.db',{
+        db = new Loki('app.json',{
             autosave: true,
-            autosaveInterval: 500,
-            autoload: true
+            autosaveInterval: 500
         });
-        console.log(db.listCollections());
-
-        expense = db.getCollection('expense');
-        if(expense === null) {
-            expense = db.addCollection('expense', {
-                indices: ['date', 'purpose', 'amount']
-            });
-            console.log(expense);
-        }
-
     }]);
     
     // Input Controller
     app.controller('inputController', ['$scope', 'Loki', function ($scope, Loki) {
         $scope.addExpense = function () {
             var data = {
-                'date': $scope.input_date,
+                'date': $scope.input_date.toLocaleDateString(),
                 'purpose': $scope.input_purpose,
                 'amount': $scope.input_amount
             };
@@ -50,7 +46,19 @@
 
     // Output Controller
     app.controller('outputController', ['$scope', 'Loki', function ($scope, Loki) {
-        $scope.expenses = expense.data;
+        db.loadDatabase({}, function () {
+            expense = db.getCollection('expense');
+
+            if(expense === null) {
+                expense = db.addCollection('expense', {
+                    indices: ['date', 'purpose', 'amount']
+                });
+                console.log(expense);
+            }
+            $scope.$apply(function () {
+                $scope.expenses = expense.data;
+            });
+        });
     }])
 
 })(window.angular);

@@ -48,8 +48,8 @@
                 </tr>
               </thead>
               <tbody ng-init="total=0">
-                <tr ng-repeat="item in expenses | orderBy: 'date'">
-                  <td>{{item.date.toLocaleDateString()}}</td>
+                <tr ng-repeat="item in expenses track by $index | orderBy: 'date'">
+                  <td>{{item.date}}</td>
                   <td>{{item.purpose}}</td>
                   <td ng-init="$parent.total=$parent.total+item.amount">{{item.amount}}</td>
                 </tr>
