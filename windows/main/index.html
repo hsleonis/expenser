@@ -16,7 +16,7 @@
       <div class="row">
         <!-- Input -->
         <div class="input_col col-xs-4">
-          <form ng-controller="inputController">
+          <form ng-controller="inputController" name="expenseForm">
             <div class="form-group">
               <label for="input_amount">Expense amount</label>
               <input type="number" min="1" class="form-control" id="input_amount" ng-model="input_amount" placeholder="Expense amount">
@@ -45,13 +45,15 @@
                   <th>Date</th>
                   <th>Purpose</th>
                   <th>Amount</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody ng-init="total=0">
-                <tr ng-repeat="item in expenses track by $index | orderBy: 'date'">
+                <tr ng-repeat="item in expenses track by $index | orderBy:'date'">
                   <td>{{item.date}}</td>
                   <td>{{item.purpose}}</td>
                   <td ng-init="$parent.total=$parent.total+item.amount">{{item.amount}}</td>
+                  <td><span class="remove_btn" ng-click="remExpense(item)"><i class="glyphicon glyphicon-remove"></i></span></td>
                 </tr>
               </tbody>
               <tfoot>
@@ -59,6 +61,7 @@
                   <th>Total</th>
                   <th></th>
                   <th>{{total}}</th>
+                  <th></th>
                 </tr>
               </tfoot>
             </table>

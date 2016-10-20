@@ -22,6 +22,21 @@
         };
     });
 
+    // Order the Object by
+    app.filter('orderString', function() {
+        return function(items, field, reverse) {
+            var filtered = [];
+            angular.forEach(items, function(item) {
+                filtered.push(item);
+            });
+            filtered.sort(function (a, b) {
+                return (a[field] > b[field] ? 1 : -1);
+            });
+            if(reverse) filtered.reverse();
+            return filtered;
+        };
+    });
+
     // Main Controller
     app.controller('mainController', ['$scope', 'Loki', function ($scope, Loki) {
         db = new Loki('app.json',{
@@ -40,7 +55,7 @@
             };
             expense.insert(data);
             db.saveDatabase();
-            console.log(expense); // output
+            $scope.expenseForm.$setPristine(true);
         };
     }]);
 
@@ -53,12 +68,18 @@
                 expense = db.addCollection('expense', {
                     indices: ['date', 'purpose', 'amount']
                 });
-                console.log(expense);
             }
             $scope.$apply(function () {
                 $scope.expenses = expense.data;
             });
         });
+
+        $scope.remExpense = function (item) {
+            $scope.total-=item.amount;
+            expense.remove({
+                $loki: item.$loki
+            });
+        };
     }])
 
 })(window.angular);
