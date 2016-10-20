@@ -22,7 +22,6 @@
             autosaveInterval: 500,
             autoload: true
         });
-        db.loadDatabase();
         console.log(db.listCollections());
 
         expense = db.getCollection('expense');
@@ -44,6 +43,7 @@
                 'amount': $scope.input_amount
             };
             expense.insert(data);
+            db.saveDatabase();
             console.log(expense); // output
         };
     }]);
