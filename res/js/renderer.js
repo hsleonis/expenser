@@ -18,19 +18,19 @@
     // Parse date
     app.filter('UTFDate',function(){
         return function(input) {
-            return input.substring(0, 10).split('-').reverse().join('/');
+            return input.substring(0, 10).split('-').reverse().join('-');
         };
     });
 
     // Order the Object by
-    app.filter('orderString', function() {
+    app.filter('orderDate', function() {
         return function(items, field, reverse) {
             var filtered = [];
             angular.forEach(items, function(item) {
                 filtered.push(item);
             });
             filtered.sort(function (a, b) {
-                return (a[field] > b[field] ? 1 : -1);
+                return ( parseInt(a[field].substring(0, 2)) > parseInt(b[field].substring(0, 2)) ? 1 : -1);
             });
             if(reverse) filtered.reverse();
             return filtered;
@@ -55,7 +55,7 @@
             };
             expense.insert(data);
             db.saveDatabase();
-            $scope.expenseForm.$setPristine(true);
+            $scope.input_date = $scope.input_amount = $scope.input_purpose = null;
         };
     }]);
 
