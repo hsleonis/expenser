@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Monthly Expense</title>
-</head>
-<body>
-    <h1>Monthly Expense</h1>
-</body>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Expense Calculator</title>
+        <meta name="author" content="Md. Hasan Shahriar">
+
+        <!-- Stylesheets -->
+        <link href="../../res/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+        <link href="../../res/css/style.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body ng-app="expenser" ng-controller="mainController">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-6" ng-controller="chartController">
+                    <div class="ct-chart ct-perfect-fourth"></div>
+                </div>
+                <div class="col-xs-6"></div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <!-- Scripts -->
+        <script type="text/javascript" src="../../res/js/angular.min.js"></script>
+        <script type="text/javascript" src="../../res/js/lokijs.js"></script>
+        <script type="text/javascript" src="../../res/js/loki-angular.js"></script>
+        <script type="text/javascript" src="../../res/js/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript" src="../../res/js/chartist.min.js"></script>
+        <script type="text/javascript" src="../../res/js/chartcode.js"></script>
+    </body>
+    <script>
+        require('../../res/js/renderer.js')
+    </script>
 </html>

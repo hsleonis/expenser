@@ -22,21 +22,6 @@
         };
     });
 
-    // Order the Object by
-    app.filter('orderDate', function() {
-        return function(items, field, reverse) {
-            var filtered = [];
-            angular.forEach(items, function(item) {
-                filtered.push(item);
-            });
-            filtered.sort(function (a, b) {
-                return ( parseInt(a[field].substring(0, 2)) > parseInt(b[field].substring(0, 2)) ? 1 : -1);
-            });
-            if(reverse) filtered.reverse();
-            return filtered;
-        };
-    });
-
     // Main Controller
     app.controller('mainController', ['$scope', 'Loki', function ($scope, Loki) {
         db = new Loki('app.json',{
@@ -80,6 +65,25 @@
                 $loki: item.$loki
             });
         };
-    }])
+    }]);
+
+    // Chart Controller
+    app.controller('chartController', ['$scope', 'Loki', function ($scope, Loki) {
+        db.loadDatabase({}, function () {
+            expense = db.getCollection('expense');
+            
+            $scope.$apply(function () {
+                $scope.expenses = expense.data;
+
+                var data = {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                    series: [
+                        [5, 2, 4, 2, 0]
+                    ]
+                };
+                new Chartist.Line('.ct-chart', expense.data);
+            });
+        });
+    }]);
 
 })(window.angular);
